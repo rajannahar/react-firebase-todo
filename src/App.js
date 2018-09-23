@@ -1,17 +1,21 @@
 import React, { Component } from 'react';
 import './App.css';
-
 import Note from './Note/Note';
 import NoteForm from './NoteForm/NoteForm';
+import { config } from './Config/config';
+import firebase from 'firebase/app';
+import "firebase/database";
+import "firebase/functions";
 
 class App extends Component {
 
   state = {
-    notes: [
-      { id: 1, noteContent: "Note 1"},
-      { id: 2, noteContent: "Note 2"},
-      { id: 3, noteContent: "Note 3"}
-    ]
+    // notes: [
+    //   { id: 1, noteContent: "Note 1"},
+    //   { id: 2, noteContent: "Note 2"},
+    //   { id: 3, noteContent: "Note 3"}
+    // ]
+    notes: []
   }
 
   addNote = note => {
@@ -25,6 +29,16 @@ class App extends Component {
         notes: [...this.state.notes, newNote]
       })
     }
+  }
+
+  componentDidMount() {
+
+    const fire = firebase.initializeApp(config);
+    console.log("fire: ",fire)
+
+    let fireDBRef = fire.database().ref().child("notes");
+    console.log("fireDBRef: ",fireDBRef)
+
   }
 
   render() {
